@@ -1,0 +1,49 @@
+{% extends "core/base.html" %}
+{% block titulo %}
+    Login de Acceso
+{% endblock titulo %}
+
+{% load static %}
+
+{% block contenido %}
+ <center>
+     <div style="background-color: violet; border-radius: 15px; margin: 100px; width: 520px;">
+        <h1>Acceso FLoreria</h1>
+          <form action="{% url 'LOGINACCESO' %}" method="POST">
+            {% csrf_token %}
+             <table>
+                 <tr>
+                    <td>Nombre Usuario:</td>
+                    <td> <input type="text" name="txtUser" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese Usuario"> </td>
+                 </tr>
+                  <tr>
+                    <td>Ingrese Contraseña:</td>
+                    <td> <input type="password" name="txtPass" class="form-control" id="exampleInputPassword1" placeholder="Password"> </td>
+                  </tr>
+                  <tr>
+                    <td>
+
+                    </td>
+                        <td>
+                            <div class="alert alert-success" role="alert">
+                                <h5>{{msg}}</h5>
+                            </div>                          
+                        </td>
+                  </tr>
+                  <tr>
+                    <td>
+                    </td>
+                    <td> <input type="submit" value="Ingresar" class="btn btn-primary">  </td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <a href="{% url 'social:begin' 'facebook' %}"><img src="{% static 'img/fb-login.png'%}" style="width: 145px;"></a>
+                    </td>
+                  </tr>
+            </table>
+         </form>
+  
+      </div>  
+ </center>
+{% endblock contenido %}

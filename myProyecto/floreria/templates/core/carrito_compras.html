@@ -1,0 +1,65 @@
+{% extends "core/base.html" %}
+{% block titulo %}
+Carrito de Compras
+{% endblock titulo %}
+{% load static %}
+{% block contenido %}
+<center>
+    <div class="container">
+        <table >
+            <tr>
+                <td>Nombre</td>
+            </tr>
+            <tr>
+                <td>Precio</td>
+            </tr>
+            <tr>
+              <td>Cantidad</td>
+            </tr>
+            <tr>
+             <td>Total</td>   
+            </tr>
+            <tr>
+              <td>Operacion</td>
+            </tr>
+            {% for l in x %}
+            <tr>
+                <td></td>                
+                <td>{{l.nombre}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>{{l.precio}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>{{l.cantidad}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>{{l.total}}</td>
+            </tr>
+            <tr>
+               <td></td>        
+                <td>
+                    <input type="button" value="+" onclick="javascript:location.href='{% url 'Carro_Mas' l.nombre %}'">
+                    <input type="button" value="-" onclick="javascript:location.href='{% url 'Carro_meno' l.nombre %}'">
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="3">Total</td>
+                <td>{{total}}</td>
+                
+            </tr>
+            <tr>
+                <td>
+                 <input type="button" value="Carrito" onclick="javascript:location.href='{% url 'grabar_carro_compra' %}'">
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    {{mensaje}}
+</center>
+{% endblock contenido %}

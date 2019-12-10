@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+
+{% block titulo %}
+Galeria de Flores - Pétalos
+{% endblock titulo %}
+
+{% load static %}
+
+{% block contenido %}
+<center>
+    <h2>Listado Flores</h2>
+</center>
+<center>
+    <div style="float: left;">
+        {% for p in lista %}
+        <div class="Floreria" class="card" style="width: 18rem;margin: 15px; float: left;">
+            <img src="{{p.imagen.url}}" width="100" height="150">
+            <h3 class="card-title">{{p.name}} </h3>
+            <h5 class="card-text">{{p.descripcion}}</h5>
+            <h5 class="card-text">{{p.valor}}</h5>
+            <div> <a href="{% url 'Carrito'%}" class="btn btn-primary">Agregar a Carrito</a> </div>
+        </div>
+        {% endfor %}
+    </div>
+</center>
+{% endblock contenido %}

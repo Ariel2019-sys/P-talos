@@ -1,0 +1,23 @@
+{% extends "core/base.html" %}
+{% block titulo %}
+Registro de Flores
+{% endblock titulo %}
+{% load static %}
+{% block contenido %}
+
+<center>
+    <div class="container" style="margin: 115px;background-color: deeppink;">
+        <h1>Nuevo Usuario</h1>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <table>
+                {{form.as_table}}
+            </table>
+            <input type="submit" value="Grabar" class="btn btn-success">
+            <input type="reset"  value="Limpiar" class="btn btn-info">
+        </form>
+
+    </div>
+        
+</center>
+{% endblock contenido%}
