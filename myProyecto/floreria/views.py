@@ -16,6 +16,8 @@ from .forms import CustinUserForm
 #    lista=lista+str(id)+str(";")
 #    request.session["carrito"]=lista
 #    return render(request,"core/carrito_compras.html",{'listaCarrito':lista})
+
+# sirve para elmiminar las flores de la bases ded datos
 def eliminar_flor(request,id):
     flo=Flor.objects.get(name=id)
     msg=''
@@ -26,11 +28,16 @@ def eliminar_flor(request,id):
         msg='no Elimino'
     lflor=Flor.objects.all()
     return render(request,"core/galeria.html",{'lista':lflor,'msg':msg})
+
+# es una ventata  para ejecutar el login    
 def log(request):
     return render(request,"core/login.html")
+# sirve para cerrar sessión del usuario    
 def cerrar_sesion(request):
     logout(request)
     return render(request,"core/login.html",{'msg':'cerro sesion'})                    
+
+# sirve para que el usuario acceda por medio del login    
 def login_acceso(request):
     if request.POST:
         usuario=request.POST.get("txtUser")
@@ -43,6 +50,8 @@ def login_acceso(request):
             auth_login(request,us)
             return render(request,"core/index.html")
     return render(request,"core/login.html",{'msg':'vuelve ingresar los datos'})
+
+# sirve para abrir la ventata del carrito     
 @login_required(login_url='/login/')    
 def carro(request):
     x=request.session["carritoC"]
@@ -50,6 +59,7 @@ def carro(request):
     for item in x:
         suma=suma+int(item["total"])
     return render(request,'core/carrito_compras.html',{'x':x,'total':suma})
+# sirve cuando se selecciona el producto
 @login_required(login_url='/login/')
 def graba_carro_compra(request):
     x=request.session["carritoC"]
@@ -78,6 +88,7 @@ def graba_carro_compra(request):
         mensaje="Error al grabar al carro"
     return  render(request,'core/carro.html',{'x':x,'total':suma,'mensaje':mensaje})                  
 
+# sirve cuando se selecciona un producto, se le agrega como lista en el carrito de compras    
 @login_required(login_url='/login/')    
 def Carro_Compra(request,id):
     p=Flor.objects.get(name=id)
@@ -100,7 +111,7 @@ def Carro_Compra(request,id):
     request.session["carritoC"]=x
     flo=Flor.objects.all()
     return render(request,'core/galeria.html',{'lista':flo,'total':suma})    
-
+# este método aumenta la cantidad de flores selccionada
 @login_required(login_url='/login/')    
 def carro_compra_mas(request,id):
     f=Flor.objects.get(name=id)
@@ -112,13 +123,13 @@ def carro_compra_mas(request,id):
         if item["nombre"]==f.name:
            cantidad=int(cantidad)+1
         ne=objeto(1,item["nombre"],item["precio"],cantidad)
-        suma=suma+int(ne.total())
+        suma=suma+int(ne.total()) # se calcula la cantidad de flores agregadas por medio de la suma
         clon.append(ne.toString())
     x=clon
     request.session["carritoC"]=x
     x=request.session["carritoC"]
     return render(request,'core/carrito_compras.html',{'x':x,'total':suma})  
-
+# este metodo funciona de la misma manera que en el anterior solamente lo disminuye
 @login_required(login_url='/login/')    
 def carro_compra_meno(request,id):
     f=Flor.objects.get(name=id)
@@ -135,14 +146,17 @@ def carro_compra_meno(request,id):
     request.session["carritoC"]=x
     return render(request,'core/carrito_compras.html',{'x':x,'total':suma})
 
-
+# para abrir la ventana principal
 @login_required(login_url='/login/')    
 def index(request):
     return render(request,'core/index.html')
+# para abrir la ventana de la galeria    
 @login_required(login_url='/login/')    
 def gale(request):
-    flo=Flor.objects.all()
+    flo=Flor.objects.all() #se carga las flores desde la base de datos
     return render(request,'core/galeria.html',{'lista':flo})
+
+# formulario para agregar, actualizar y eliminar la flor de la base de datos    
 @login_required(login_url='/login/')
 def formulario(request):
     categorias=Categoria.objects.all()
@@ -178,10 +192,13 @@ def formulario(request):
             return render(request,'core/formulario.html',{'listacategoria':categorias,'msg':'elimino'})
     return render(request,'core/formulario.html',{'listacategoria':categorias})
 
+
+# se abre la ventana de quienes somos
 @login_required(login_url='/login/')
 def quie(request):
     return render(request,'core/Quienes somos.html') 
 
+# sirve para registar nuevos usuarios por medio de la ventana de registrar usuario
 def registro(request):
     data={
         'form':CustinUserForm()
@@ -196,4 +213,4 @@ def registro(request):
             return redirect(to='IND')
     return render(request,'core/Registro_usuario.html',data)
 def isset(variable):
-    return variable in locals() or variable in globals()    
+    return variable in locals() or variable in globals()        

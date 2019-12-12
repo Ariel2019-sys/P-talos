@@ -6,12 +6,13 @@ Registro de Flores
 {% block contenido %}
 
 <center>
+     <!-- formulario para registrar un nuevo usuario--->
     <div class="container" style="margin: 115px;background-color: deeppink;">
         <h1>Nuevo Usuario</h1>
         <form action="" method="POST">
             {% csrf_token %}
             <table>
-                {{form.as_table}}
+                {{form.as_table}} <!-- se carga el formulario desde otra ventana llamado forms.py--->
             </table>
             <input type="submit" value="Grabar" class="btn btn-success">
             <input type="reset"  value="Limpiar" class="btn btn-info">

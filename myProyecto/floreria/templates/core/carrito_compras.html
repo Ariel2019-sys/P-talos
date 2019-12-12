@@ -5,61 +5,58 @@ Carrito de Compras
 {% load static %}
 {% block contenido %}
 <center>
-    <div class="container">
-        <table >
+    <!-- es una tabla donde se lista las flores seleccionadas --->
+    <div class="container" style="background-color:deeppink;border-radius: 15px; width: 525px;margin: 115px;">
+        <table border="1">
             <tr>
-                <td>Nombre</td>
+                <td colspan="2" style="text-align: center;font-size: 20px;">Nombre</td>
             </tr>
             <tr>
-                <td>Precio</td>
+                <td colspan="2" style="text-align: center;font-size: 20px;">Precio</td>
             </tr>
             <tr>
-              <td>Cantidad</td>
+                <td colspan="2" style="text-align: center;font-size: 20px;">Cantidad</td>
             </tr>
             <tr>
-             <td>Total</td>   
+                <td colspan="2" style="text-align: center;font-size: 20px;">Total</td>
             </tr>
             <tr>
-              <td>Operacion</td>
+                <td colspan="2" style="text-align: center;font-size: 20px;">Operacion</td>
             </tr>
             {% for l in x %}
             <tr>
-                <td></td>                
-                <td>{{l.nombre}}</td>
+                <td></td>
+                <td>{{l.nombre}}</td> <!-- se carga los datos desde la base de datos de las flores --->
             </tr>
             <tr>
                 <td></td>
-                <td>{{l.precio}}</td>
+                <td>{{l.precio}}</td> <!-- se carga los datos desde la base de datos de las flores --->
             </tr>
             <tr>
                 <td></td>
-                <td>{{l.cantidad}}</td>
+                <td>{{l.cantidad}}</td> <!-- se carga los datos desde la base de datos de las flores --->
             </tr>
             <tr>
                 <td></td>
-                <td>{{l.total}}</td>
-            </tr>
-            <tr>
-               <td></td>        
-                <td>
-                    <input type="button" value="+" onclick="javascript:location.href='{% url 'Carro_Mas' l.nombre %}'">
-                    <input type="button" value="-" onclick="javascript:location.href='{% url 'Carro_meno' l.nombre %}'">
-                </td>
+                <td>{{l.total}}</td> <!-- se carga los datos desde la base de datos de las flores --->
             </tr>
             {% endfor %}
             <tr>
-                <td colspan="3">Total</td>
-                <td>{{total}}</td>
-                
+                <td colspan="2" style="text-align: center;font-size: 20px;">Total</td>
+                <td>{{total}}</td> <!-- se calcula la cantidad de flores agregados desde la galeria--->
+
             </tr>
             <tr>
                 <td>
-                 <input type="button" value="Carrito" onclick="javascript:location.href='{% url 'grabar_carro_compra' %}'">
+                    <!-- botón para seleccionar de forma definitiva a la base de datos --->
+                    <input type="button" class="btn btn-primary" value="Carrito" href="{% url 'grabar_carro_compra' %}">
                 </td>
             </tr>
-            
+
         </table>
     </div>
-    {{mensaje}}
+    <center>
+        <div class="alert alert-success" role="alert" id="respuesta">{{mensaje}}</div>
+    </center>
 </center>
 {% endblock contenido %}
