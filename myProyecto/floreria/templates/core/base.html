@@ -2,12 +2,13 @@
 <html lang="en">
 {% load static %}
 <!--cargar los estilos personalisados -->
-<link href="css/diseño.css" rel="stylesheet">
+
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="{% static 'css/diseño.css' %}" type="text/css" rel="stylessheet">
+  <link href="{% static '/css/diseño.css' %}" type="text/css" rel="stylessheet">
   <!--carga los estilos boostrap-->
   <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'bootstrap/css/local.min.css' %}" rel="stylesheet">
@@ -16,11 +17,37 @@
 
     {% endblock Titulo %}
   </title>
+
+  <!-- se carga los service worker-->
+    {% load pwa %} 
+    {% progressive_web_app_meta %}
+ 
+  <!--estilos del cuerpo de la pagina-->
   <style>
     body {
       background-color: white;
     }
+    @media (max-width:600px){
+    header nav img{
+        display: none;
+    }
+    .floreria{
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 10px;
+        background-color: rgb(0, 255, 98);
+        width: 120px;
+        float: left;
+        margin: 5px;
+        border-radius: 10px 0px 10px 0px;
+    }
+    .floreria img{
+        width: 100px;
+        height: 150px;
+    }
+}
+
   </style>
+
   <!-- funcionamiento del carrusel--->
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -31,6 +58,85 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js"
     integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P"
     crossorigin="anonymous"></script>
+
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js"></script>
+
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyDHnY2BhpRreLmRfeE_jUnIgeG0rMgWPxk",
+      authDomain: "petalos-1bd0d.firebaseapp.com",
+      databaseURL: "https://petalos-1bd0d.firebaseio.com",
+      projectId: "petalos-1bd0d",
+      storageBucket: "petalos-1bd0d.appspot.com",
+      messagingSenderId: "944101874954",
+      appId: "1:944101874954:web:f257bb72239c251b8faef3"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    let messaging = firebase.messaging();
+
+    navigator.serviceWorker
+      .register('/serviceworker.js')
+      .then(function(register) {
+
+        messaging.useServiceWorker(register);
+
+         messaging.requestPermission()
+        .then(function(){
+          console.log("el usuario acepto recibir notificaciones ")
+
+          return messaging.getToken();
+
+        })
+        .then(function (token) {            
+          console.log(token);
+          fetch('guardar-token/', {
+            method: 'post',
+            headers: {
+             'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              'token': token
+            })
+          })
+            .then(function (resultado) {
+              console.log("se ha guardado el token ")
+            })
+            .catch(function (e) {
+              console.log("no se logro guardar el token")
+            })
+          })
+          .catch(function (e) {
+            console.log("el usuario no ha aceptado")
+          })
+      })
+
+
+    messaging.onMessage(function (payload) {
+
+      let title = payload.notification.title;
+
+      let options = {
+        body: payload.notification.body,
+        icon: payload.notification.icon
+      }
+
+      let mensaje = new Notification(title, options);
+
+    });
+
+
+  </script>
+
 </head>
 
 <body>
@@ -54,6 +160,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'FORMU'%}">Formulario</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'FormularioAPI'%}">Formulario API</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'QUIEN'%}">Quienes Somos</a>
@@ -199,15 +308,16 @@
         <td>
           <div style="background-color: violet;width: 617px;">
             <h2>Buscanos en nuestras redes sociales</h1>
-            <h6>Intagram: #floreriasPétalos</h6>
-            <h6>Twiter: @floreriaPétalos </h6>
-            <h6>Snapchat: floreriapetalos56</h6>
+              <h6>Intagram: #floreriasPétalos</h6>
+              <h6>Twiter: @floreriaPétalos </h6>
+              <h6>Snapchat: floreriapetalos56</h6>
           </div>
         </td>
       </tr>
     </table>
   </center>
   {% endblock contenido %}
+
 </body>
 
 </html>

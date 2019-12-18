@@ -1,0 +1,76 @@
+{% extends "core/base.html" %}
+{% block titulo %}
+Registro de Flores
+{% endblock titulo %}
+{% load static %}
+{% block contenido %}
+<center>
+    <h2>Registro de Flores</h2>
+    <img src="{% static 'img/secretaria.png'%}" style="width: 345px;">
+    <!-- aqui el administrador puede agregar nuevas flores, modificar flores y eliminar flores de la lista--->
+    <div class="formulario_api" style="background-color:deeppink; width: 525px;margin: 115px;">
+        <center>            
+            <form id="frmdatos" method="POST" action="{% url 'GUARDA_FORMU'%}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table border="1">
+                    <tr>
+                        <td colspan="2" style="text-align: center;font-size: 20px;">Registro</td>
+                    </tr>
+                    <tr>
+                        <td>Nombre:</td>
+                        <td>
+                            <input type="text" name="txtNombre" id="txtNombre" class="form-control"
+                                placeholder="Ingrese nombre"> </td>
+                    </tr>
+                    <tr>
+                        <td>Valor:</td>
+                        <td>
+                            <input type="number" name="txtValor" id="txtValor" min="100" class="form-control" placeholder="ingrese número"></td>
+                    </tr>
+                    <tr>
+                        <td>Descripcion:</td>
+                        <td>
+                            <input type="text" name="txtDescripcion" id="txtDescripcion" class="form-control"
+                                id="exampleFormControlTextarea1" rows="3" placeholder="ingrese una descripción"> </td>
+                    </tr>
+                    <tr>
+                        <td>Categoria:</td>
+                        <td>
+                            <select name="cboCategoria" id="disabledSelect" class="form-control">
+                                {% for c in listacategoria %}
+                                <option>{{c.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>                 
+                    <tr>
+                        <td>Estado :</td>
+                        <td>
+                            <input type=text name="txtestado" id="txtestado" placeholder="dispononible">
+                        </td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Stock :</td>
+                        <td>
+                            <input type="number" name="txtStock" id="txtStock" min="1" placeholder="ingrese stock"></td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-success">Grabar</button>
+                            <a href="{% url 'LSFAPI'%}" role="button">Listar flores</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </center>
+    </div>
+</center>
+<center>
+    <div class="alert alert-success" role="alert" id="respuesta">{{mensaje}}</div>
+</center>
+{% endblock contenido %}
